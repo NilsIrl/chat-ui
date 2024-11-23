@@ -193,6 +193,7 @@ export async function endpointOai(
 
 			console.log(model);
 			console.log(model.systemRoleSupported);
+			console.log(messagesOpenAI);
 			if (model.systemRoleSupported && messagesOpenAI?.[0]?.role !== "system") {
 				messagesOpenAI = [{ role: "system", content: "" }, ...messagesOpenAI];
 			}
@@ -200,6 +201,7 @@ export async function endpointOai(
 			if (messagesOpenAI?.[0]) {
 				messagesOpenAI[0].content = preprompt ?? "";
 			}
+			console.log(messagesOpenAI);
 
 			if (toolResults && toolResults.length > 0) {
 				const toolCallRequests: OpenAI.Chat.Completions.ChatCompletionAssistantMessageParam = {
@@ -237,6 +239,7 @@ export async function endpointOai(
 				messagesOpenAI.push(...responses);
 			}
 
+			console.log(messagesOpenAI);
 			const parameters = { ...model.parameters, ...generateSettings };
 			const toolCallChoices = createChatCompletionToolsArray(tools);
 			const body: ChatCompletionCreateParamsStreaming = {
@@ -251,7 +254,7 @@ export async function endpointOai(
 				presence_penalty: parameters?.presence_penalty,
 				...(toolCallChoices.length > 0 ? { tools: toolCallChoices, tool_choice: "auto" } : {}),
 			};
-			console.log(messagesOpenAI);
+			
 
 			const openChatAICompletion = await openai.chat.completions.create(body, {
 				body: { ...body, ...extraBody },
