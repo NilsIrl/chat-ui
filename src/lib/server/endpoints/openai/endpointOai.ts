@@ -249,6 +249,7 @@ export async function endpointOai(
 				presence_penalty: parameters?.presence_penalty,
 				...(toolCallChoices.length > 0 ? { tools: toolCallChoices, tool_choice: "auto" } : {}),
 			};
+			console.log(messagesOpenAI);
 
 			const openChatAICompletion = await openai.chat.completions.create(body, {
 				body: { ...body, ...extraBody },
