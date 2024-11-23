@@ -111,7 +111,6 @@ export const endpointOAIParametersSchema = z.object({
 			}),
 		})
 		.default({}),
-	systemRoleSupported: z.boolean().default(true),
 });
 
 export async function endpointOai(
@@ -126,7 +125,6 @@ export async function endpointOai(
 		defaultQuery,
 		multimodal,
 		extraBody,
-        systemRoleSupported,
 	} = endpointOAIParametersSchema.parse(input);
 
 	let OpenAI;
@@ -193,7 +191,7 @@ export async function endpointOai(
 			let messagesOpenAI: OpenAI.Chat.Completions.ChatCompletionMessageParam[] =
 				await prepareMessages(messages, imageProcessor, !model.tools && model.multimodal);
 
-			if (systemRoleSupported && messagesOpenAI?.[0]?.role !== "system") {
+			if (model.systemRoleSupported && messagesOpenAI?.[0]?.role !== "system") {
 				messagesOpenAI = [{ role: "system", content: "" }, ...messagesOpenAI];
 			}
 
