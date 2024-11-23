@@ -191,6 +191,8 @@ export async function endpointOai(
 			let messagesOpenAI: OpenAI.Chat.Completions.ChatCompletionMessageParam[] =
 				await prepareMessages(messages, imageProcessor, !model.tools && model.multimodal);
 
+			console.log(model);
+			console.log(model.systemRoleSupported);
 			if (model.systemRoleSupported && messagesOpenAI?.[0]?.role !== "system") {
 				messagesOpenAI = [{ role: "system", content: "" }, ...messagesOpenAI];
 			}
