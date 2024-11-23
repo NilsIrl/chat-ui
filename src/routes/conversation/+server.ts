@@ -46,7 +46,7 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 	let messages: Message[] = [
 		{
 			id: v4(),
-			from: "system",
+			from: model.systemRoleSupported ? "system" : "user",
 			content: values.preprompt ?? "",
 			createdAt: new Date(),
 			updatedAt: new Date(),
